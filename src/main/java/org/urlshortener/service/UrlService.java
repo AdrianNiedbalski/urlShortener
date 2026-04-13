@@ -1,6 +1,7 @@
 package org.urlshortener.service;
 
 import org.urlshortener.repository.UrlRepository;
+import org.urlshortener.utils.ShortUrlGenerator;
 
 public class UrlService {
     private UrlRepository urlRepository;
@@ -10,7 +11,9 @@ public class UrlService {
     }
 
     public String addUrl(String url) {
-        return urlRepository.addUrl(url);
+        String shortUrl = ShortUrlGenerator.generateUrl();
+        urlRepository.addUrl(url, shortUrl);
+        return shortUrl;
     }
 
     public String readUrl(String shortUrl) {

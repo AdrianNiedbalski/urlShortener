@@ -17,28 +17,37 @@ public class UrlController {
     }
 
     private void printMenu() {
-        log.info("---CHOSE OPTION---");
-        log.info("1. Add url");
-        log.info("2. Read URL");
-        log.info("3. Exit");
+        log.info("---CHOSE OPTION---\n 1. Add url\n 2. Read URL\n 3. Exit");
     }
 
     public void start() {
         boolean running = true;
+        String url;
+        String shortUrl;
         while (running) {
             printMenu();
             String choice = scanner.nextLine();
 
             switch (choice) {
+                //Handle Url
                 case "1":
+                    log.info("Write url:\n");
+                    url = scanner.nextLine();
+                    shortUrl = urlService.addUrl(url);
+                    log.info(shortUrl);
                     break;
                 case "2":
+                    log.info("Write short url:\n");
+                    shortUrl = scanner.nextLine();
+                    url = urlService.readUrl(shortUrl);
+                    log.info(url);
                     break;
                 case "3":
                     running = false;
                     break;
                 default:
                     log.info("Incorrect choice!");
+                    break;
             }
         }
     }

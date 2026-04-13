@@ -10,11 +10,11 @@ public class UrlRepository {
         this.db = new HashMap<>();
     }
 
-    public String addUrl(String url) {
-        return "";
+    public void addUrl(String url, String shortUrl) {
+        db.put(shortUrl, url);
     }
 
     public String readUrl(String shortUrl) {
-        return "";
+        return db.get(shortUrl);
     }
 }
