@@ -15,4 +15,8 @@ public class ShortUrlGenerator {
 
         return generatedUrl;
     }
+
+    public static String generateUrl(String url) {
+        return String.valueOf(url.hashCode());
+    }
 }
