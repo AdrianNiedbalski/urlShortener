@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UrlRepositoryImpl implements UrlRepository {
-    private Map<String, String> db;
+    private final Map<String, String> db;
 
     public UrlRepositoryImpl() {
         this.db = new HashMap<>();

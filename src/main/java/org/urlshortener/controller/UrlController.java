@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 @Slf4j
 public class UrlController {
-    private UrlServiceImpl urlServiceImpl;
-    private Scanner scanner;
+    private final UrlServiceImpl urlServiceImpl;
+    private final Scanner scanner;
 
     public UrlController(UrlServiceImpl urlServiceImpl) {
         this.urlServiceImpl = urlServiceImpl;
@@ -56,13 +56,13 @@ public class UrlController {
         }
     }
 
-    public String addUrl(String url) {
+    /*public String addUrl(String url) {
         return urlServiceImpl.addUrl(url);
     }
 
     public String readUrl(String shortUrl) {
         return urlServiceImpl.readUrl(shortUrl);
-    }
+    }*/
 
     private void addUrlHandler(String url, String shortUrl) {
         while (true) {

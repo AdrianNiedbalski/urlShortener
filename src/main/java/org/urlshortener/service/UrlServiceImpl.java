@@ -6,7 +6,7 @@ import org.urlshortener.utils.ShortUrlGenerator;
 import org.urlshortener.utils.UrlValidator;
 
 public class UrlServiceImpl implements  UrlService{
-    private UrlRepositoryImpl urlRepositoryImpl;
+    private final UrlRepositoryImpl urlRepositoryImpl;
 
     public UrlServiceImpl(UrlRepositoryImpl urlRepositoryImpl) {
         this.urlRepositoryImpl = urlRepositoryImpl;
