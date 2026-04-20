@@ -1,6 +1,8 @@
 package org.urlshortener.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.urlshortener.dto.Command;
+import org.urlshortener.dto.InputData;
 import org.urlshortener.exception.UrlNotValidException;
 import org.urlshortener.service.UrlServiceImpl;
 
@@ -16,37 +18,23 @@ public class UrlController {
         this.scanner = new Scanner(System.in);
     }
 
-    private void printMenu() {
-        String menu = """
-                ---CHOOSE OPTION---
-                1. Add url
-                2. Read URL
-                3. Exit
-                """;
-        log.info(menu);
-    }
-
     public void start() {
         boolean running = true;
         String url = "";
         String shortUrl = "";
 
         while (running) {
-            printMenu();
-            String choice = scanner.nextLine();
+            String userInput = scanner.nextLine();
+            InputData inputData = menuHandler(userInput);
 
-            switch (choice) {
-                //Handle Url
-                case "1":
-                    addUrlHandler(url, shortUrl);
+            switch (inputData.getCommand()) {
+                case Command.ADD:
+                    addUrlHandler(inputData.getUrl());
                     break;
-                case "2":
-                    log.info("Write short url:\n");
-                    shortUrl = scanner.nextLine();
-                    url = urlServiceImpl.readUrl(shortUrl);
-                    log.info(url);
+                case Command.READ:
+                    readUrlHandler(inputData.getUrl());
                     break;
-                case "3":
+                case Command.EXIT:
                     running = false;
                     break;
                 default:
@@ -56,25 +44,52 @@ public class UrlController {
         }
     }
 
-    /*public String addUrl(String url) {
-        return urlServiceImpl.addUrl(url);
+    private void addUrlHandler(String url) {
+        String shortUrl = "";
+
+        try {
+            shortUrl = urlServiceImpl.addUrl(url);
+            log.info(shortUrl);
+        } catch (UrlNotValidException e) {
+            log.info("Wrong url, try again!");
+        }
     }
 
-    public String readUrl(String shortUrl) {
-        return urlServiceImpl.readUrl(shortUrl);
-    }*/
+    private void readUrlHandler(String shortUrl) {
+        String url = "";
 
-    private void addUrlHandler(String url, String shortUrl) {
-        while (true) {
-            log.info("Write url:\n");
-            url = scanner.nextLine();
-            try {
-                shortUrl = urlServiceImpl.addUrl(url);
-                log.info(shortUrl);
-                break;
-            } catch (UrlNotValidException e) {
-                log.info("Wrong url, try again!");
+        try {
+            url = urlServiceImpl.readUrl(shortUrl);
+            log.info(url);
+        } catch (UrlNotValidException e) {
+            log.info("Wrong key!");
+        }
+    }
+
+    private InputData menuHandler(String input) {
+        String[] inputArray = input.split(" ");
+        InputData inputData = new InputData(Command.EXIT, "");
+
+        if (inputArray.length != 2) {
+            log.info("Wrong input!");
+        } else {
+            switch (inputArray[0]) {
+                case "/ADD":
+                    inputData.setCommand(Command.ADD);
+                    inputData.setUrl(inputArray[1]);
+                    break;
+                case "/READ":
+                    inputData.setCommand(Command.READ);
+                    inputData.setUrl(inputArray[1]);
+                    break;
+                case "/EXIT":
+                    inputData.setCommand(Command.EXIT);
+                    break;
+                default:
+                    log.info("Wrong command!");
+                    break;
             }
         }
+        return inputData;
     }
 }
